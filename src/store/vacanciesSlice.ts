@@ -142,3 +142,5 @@ export const vacanciesSlice = createSlice({
             })
     }
 })
+export const { addSkill, removeSkill } = vacanciesSlice.actions;
+export default vacanciesSlice.reducer;
