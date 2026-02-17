@@ -12,7 +12,7 @@ export function AppHeader() {
             <Group pos={'absolute'} left={'50%'} style={{transform: 'translateX(-50%)'}} align="center">
                 <Group gap={8}>
                     <Text fw={500}>Вакансии FE</Text>
-                    <ThemeIcon color={'blue'} size={6}/>
+                    <ThemeIcon  size={6}/>
                 </Group>
                 <AboutUser/>
             </Group>

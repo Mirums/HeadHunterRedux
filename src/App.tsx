@@ -16,7 +16,7 @@ function App() {
         <AppShell.Header withBorder>
                 <AppHeader/>
         </AppShell.Header>
-        <AppShell.Main>
+        <AppShell.Main bg={'dark.0'}>
             <Body/>
         </AppShell.Main>
     </AppShell>
