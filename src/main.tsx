@@ -19,7 +19,7 @@ const theme = createTheme({
             "#818CF8",
             "#6366F1",
             "#4F46E5",
-            "#4623EB", //7 primary
+            "#4263EB", //7 primary
             "#364FC7", //8 DarkPrimary
             "#2B3A99",
         ],

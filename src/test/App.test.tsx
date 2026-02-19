@@ -4,5 +4,5 @@ import App from '../App'
 
 test('renders App component', () => {
     render(<App />)
-    expect(screen.getByText(/vite/i)).toBeInTheDocument()
+    expect(screen.getByText('Список вакансий')).toBeInTheDocument()
 })

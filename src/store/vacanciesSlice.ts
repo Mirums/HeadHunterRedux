@@ -1,146 +1,154 @@
-import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import ky from "ky";
 
 type Vacancy = {
-    name: string
+    id: number;
+    name: string;
     salary: {
-        from: number | null
-        to: number | null
-    } | null
+        from: number | null;
+        to: number | null;
+    } | null;
     employer: {
-        name: string
-    }
+        name: string;
+    };
     schedule: {
-        name: string
-    }
+        name: string;
+    };
     area: {
-        name: string
-    }
-}
+        name: string;
+    };
+    experience: {
+        id: string;
+        name: string;
+    };
+};
 
 type VacanciesResponse = {
-    items: Vacancy[]
-    found: number
-    pages: number
-    page: number
-    per_page: number
-}
+    items: Vacancy[];
+    found: number;
+    pages: number;
+    page: number;
+    per_page: number;
+};
 
 type VacanciesState = {
-    vacancies: Vacancy[]
+    vacancies: Vacancy[];
 
-    //Фильтры
-    searchText: string
-    area: string | null
-    skills: string[]
+    // Фильтры
+    searchText: string;
+    area: string | null;
 
-    //Пагинация
-    found: number
-    pages: number
-    page: number
-    perPage: number
+    // Пагинация
+    found: number;
+    pages: number;
+    page: number;
+    perPage: number;
 
-    loading: boolean
-}
+    loading: boolean;
+};
 
 function buildVacanciesQuery(params: {
-    searchText: string
-    area: string | null
-    skills: string[]
-    page: number
+    searchText: string;
+    area: string | null;
+    page: number;
 }) {
-    const query = new URLSearchParams()
+    const query = new URLSearchParams();
 
-    query.set('industry', '7')
-    query.set('professional_role', '96')
+    const baseText = "Frontend-разработчик";
 
-    if (params.searchText) {
-        query.set('text', params.searchText)
-        query.set('search_field', 'name,company_name')
-    }
+    const finalText = [baseText, params.searchText].filter(Boolean).join(" ").trim();
+    query.set("text", finalText);
 
     if (params.area) {
-        query.set('area', params.area)
+        query.set("area", params.area);
     }
 
-    if (params.skills.length > 0) {
-        query.set('skill_set', params.skills.join(','))
-    }
+    query.set("page", String(params.page));
+    query.set("per_page", "10");
 
-    query.set('page', String(params.page))
-    query.set('per_page', '10')
-
-    return query.toString()
+    return query.toString();
 }
 
 const initialVacancies: VacanciesState = {
     vacancies: [],
-    searchText: '',
+    searchText: "",
     area: null,
-    skills: ['TypeScript', 'React', 'Redux'],
     found: 0,
     pages: 0,
     page: 0,
     perPage: 0,
-    loading: false
-}
+    loading: false,
+};
+
 export const fetchVacancies = createAsyncThunk<
     VacanciesResponse,
     void,
-    {state: {vacancies: VacanciesState}}
+    { state: { vacancies: VacanciesState } }
 >(
-    'vacancies/fetchVacancies',
-    async (_, {getState}) => {
-        const state = getState().vacancies
+    "vacancies/fetchVacancies",
+    async (_, { getState }) => {
+        const state = getState().vacancies;
 
         const queryString = buildVacanciesQuery({
             searchText: state.searchText,
             area: state.area,
-            skills: state.skills,
             page: state.page,
-        })
+        });
 
-        const url = `https://api.hh.ru/vacancies?${queryString}`
+        const url = `https://api.hh.ru/vacancies?${queryString}`;
 
-        const data = await ky.get(url).json<VacanciesResponse>()
-        return data
+        const data = await ky
+            .get(url, {
+                headers: {
+                    "User-Agent": "HH-Frontend-App",
+                },
+            })
+            .json<VacanciesResponse>();
+
+        console.log("FETCH with:", {
+            searchText: state.searchText,
+            area: state.area,
+            page: state.page,
+        });
+
+        return data;
     }
-)
+);
 
 export const vacanciesSlice = createSlice({
-    name: 'vacancies',
+    name: "vacancies",
     initialState: initialVacancies,
     reducers: {
-        addSkill: (state, action: PayloadAction<string>) => {
-            const skill = action.payload.trim()
-            if (!skill) return
-            if (!state.skills.includes(skill)) {
-                state.skills.push(skill)
-                state.page=0
-            }
+        setSearchText: (state, action: PayloadAction<string>) => {
+            state.searchText = action.payload;
+            state.page = 0;
         },
-        removeSkill: (state, action: PayloadAction<string>) => {
-            state.skills = state.skills.filter(s => s !== action.payload)
-            state.page=0
-        }
+        setPage: (state, action: PayloadAction<number>) => {
+            state.page = action.payload;
+        },
+        setArea: (state, action: PayloadAction<string | null>) => {
+            state.area = action.payload;
+            state.page = 0;
+        },
     },
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder
-            .addCase(fetchVacancies.pending, state => {
-                state.loading = true
+            .addCase(fetchVacancies.pending, (state) => {
+                state.loading = true;
             })
             .addCase(fetchVacancies.fulfilled, (state, action) => {
-                state.loading = false
-                state.vacancies = action.payload.items
-                state.page = action.payload.page
-                state.pages = action.payload.pages
-                state.found = action.payload.found
-                state.perPage = action.payload.per_page
+                state.loading = false;
+                state.vacancies = action.payload.items;
+                state.page = action.payload.page;
+                state.pages = action.payload.pages;
+                state.found = action.payload.found;
+                state.perPage = action.payload.per_page;
             })
-            .addCase(fetchVacancies.rejected, state => {
-                state.loading = false
-            })
-    }
-})
-export const { addSkill, removeSkill } = vacanciesSlice.actions;
+            .addCase(fetchVacancies.rejected, (state) => {
+                state.loading = false;
+            });
+    },
+});
+
+export const { setSearchText, setPage, setArea } = vacanciesSlice.actions;
 export default vacanciesSlice.reducer;
