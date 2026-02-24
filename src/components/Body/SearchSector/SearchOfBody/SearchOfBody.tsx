@@ -2,7 +2,7 @@ import {Button, Group, TextInput} from "@mantine/core";
 import {IconSearch} from "@tabler/icons-react";
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState, AppDispatch} from "../../../../store/store.ts";
-import { setSearchText} from "../../../../store/vacanciesSlice.ts";
+import { setSearchText} from "../../../../store/vacancies/vacanciesSlice.ts";
 import { useState } from "react";
 
 export function SearchOfBody() {

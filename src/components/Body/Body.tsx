@@ -8,8 +8,8 @@ import type {RootState, AppDispatch} from "../../store/store.ts"
 import {useEffect} from "react";
 import {SearchRegion} from "./SearchRegion/SearchRegion.tsx";
 import {PaginationBody} from "./PagintationBody/PaginationBody.tsx";
-import { fetchVacancies } from "../../store/vacanciesSlice.ts";
 import {VacanciesLoader} from "./VacanciesLoader/VacanciesLoader.tsx";
+import {fetchVacancies} from "../../store/vacancies/vacancies.thunk.ts";
 
 export function Body() {
     const dispatch = useDispatch<AppDispatch>();
@@ -37,6 +37,8 @@ export function Body() {
                 {vacancies.map((vacancy) => (
                     <Vacancies
                         key={vacancy.id}
+                        isCurrentVacancy={false}
+                        id={vacancy.id}
                         name={vacancy.name}
                         salary={vacancy.salary}
                         employer={vacancy.employer.name}

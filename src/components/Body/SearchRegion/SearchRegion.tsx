@@ -1,6 +1,6 @@
 import {Paper, Select} from "@mantine/core";
 import {useDispatch, useSelector} from "react-redux";
-import {setArea} from '../../../store/vacanciesSlice.ts'
+import {setArea} from '../../../store/vacancies/vacanciesSlice.ts'
 import {type RootState} from '../../../store/store.ts'
 import { IconMapPin} from "@tabler/icons-react";
 export function SearchRegion() {

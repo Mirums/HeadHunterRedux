@@ -1,7 +1,7 @@
 import {Group, Pagination} from "@mantine/core";
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../../store/store.ts";
-import {setPage} from "../../../store/vacanciesSlice.ts";
+import {setPage} from "../../../store/vacancies/vacanciesSlice.ts";
 
 export function PaginationBody() {
     const dispatch = useDispatch()

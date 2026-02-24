@@ -1,6 +1,9 @@
 import {Badge, Button, Card, Group,  Text} from "@mantine/core";
+import {useNavigate} from "react-router-dom";
 type Props = {
     name: string
+    id?: number
+    isCurrentVacancy: boolean
     salary: {
         from: number | null
         to: number | null
@@ -15,6 +18,7 @@ type Props = {
 }
 
 export function Vacancies(props: Props) {
+    const navigate = useNavigate();
     function salaryExist() {
         if (props.salary !== null) {
             if (props.salary.from !== null && props.salary.to !== null) {
@@ -43,6 +47,7 @@ export function Vacancies(props: Props) {
             return `Опыт более 6 лет`
         }
     }
+
     return <Card w={659} h={248} ml={0}>
         <Text  c={'indigoCustom.8'} fz={20} fw={600}>{props.name}</Text>
         <Group mb={16}>
@@ -54,13 +59,17 @@ export function Vacancies(props: Props) {
             <Text fw={700} fz={9}>{props.schedule}</Text>
         </Badge>
         <Text mb={16}>{props.area}</Text>
-        <Group gap={12}>
-            <Button bg={'black'}>
-                <Text fw={400} fz={14}>Смотреть вакансию </Text>
-            </Button>
-            <Button bg={'dark.2'} c={'dark.7'}>
-                <Text fw={400} fz={14}>Откликнуться</Text>
+        {props.isCurrentVacancy
+            ? <Button bg={'black'}><Text fw={400} fz={14}>Откликнуться на hh.ru</Text></Button>
+            :<Group gap={12}>
+                <Button bg={'black'} onClick={() => {navigate(`/vacancies/${props.id}`)}}>
+                    <Text fw={400} fz={14}>Смотреть вакансию </Text>
                 </Button>
-        </Group>
+                <Button bg={'dark.2'} c={'dark.7'}>
+                    <Text fw={400} fz={14}>Откликнуться</Text>
+                </Button>
+            </Group>
+        }
+
     </Card>
 }
