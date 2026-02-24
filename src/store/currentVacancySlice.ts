@@ -3,6 +3,22 @@ import {createSlice} from "@reduxjs/toolkit";
 import {fetchVacancyById} from "./vacancies/vacancies.thunk.ts";
 
 const initialCurrentVacancy: CurrentVacancy = {
+    id: 0,
+    name: '',
+    salary: null,
+    employer: {
+        name: '',
+    },
+    schedule: {
+        name: '',
+    },
+    area: {
+        name: '',
+    },
+    experience: {
+        id: '',
+        name: '',
+    },
     description: null,
     isLoading: true,
 }
@@ -17,6 +33,14 @@ export const currentVacanciesSlice = createSlice({
             })
             .addCase(fetchVacancyById.fulfilled, (state, action) => {
                 state.isLoading = false
+
+                state.id = action.payload.id;
+                state.name = action.payload.name;
+                state.salary = action.payload.salary;
+                state.employer = action.payload.employer;
+                state.schedule = action.payload.schedule;
+                state.area = action.payload.area;
+                state.experience = action.payload.experience;
                 state.description = action.payload.description
             })
             .addCase(fetchVacancyById.rejected, (state) => {
@@ -24,3 +48,5 @@ export const currentVacanciesSlice = createSlice({
             })
     }
 })
+
+export default currentVacanciesSlice.reducer;

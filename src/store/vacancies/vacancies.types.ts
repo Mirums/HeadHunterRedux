@@ -42,10 +42,10 @@ export type VacanciesState = {
 
     loading: boolean;
 };
-export type CurrentVacancyResponse = {
+export type CurrentVacancyResponse = Vacancy &{
     description: string | null
 }
-export type CurrentVacancy = {
+export type CurrentVacancy = Vacancy & {
     description: string | null
     isLoading: boolean
 }
