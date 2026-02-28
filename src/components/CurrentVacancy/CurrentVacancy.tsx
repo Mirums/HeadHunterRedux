@@ -23,6 +23,7 @@ export function CurrentVacancy() {
         <Stack mt={24}  w={'100%'} align="center" justify="center" h="100%" gap={29}>
             <Vacancies
                 name={CurrentVacancy.name}
+                url={CurrentVacancy.alternate_url}
                 isCurrentVacancy={true}
                 salary={CurrentVacancy.salary}
                 employer={CurrentVacancy.employer.name}

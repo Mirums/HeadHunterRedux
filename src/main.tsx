@@ -3,11 +3,11 @@ import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import '@mantine/core/styles.css'
-import { createTheme, MantineProvider} from "@mantine/core";
+import {createTheme, MantineProvider} from "@mantine/core";
 import {Provider} from "react-redux";
 import {store} from "./store/store.ts";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import { Body } from './components/Body/Body.tsx'
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import {Body} from './components/Body/Body.tsx'
 import {CurrentVacancy} from "./components/CurrentVacancy/CurrentVacancy.tsx";
 
 const theme = createTheme({
@@ -47,18 +47,18 @@ const theme = createTheme({
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-            <MantineProvider theme={theme}>
-                <Provider store={store}>
-                    <BrowserRouter basename="/HeadHunterRedux">
+        <MantineProvider theme={theme}>
+            <Provider store={store}>
+                <BrowserRouter>
                         <Routes>
                             <Route path={'/'} element={<App/>}>
-                                <Route index element={<Body />} />
+                                <Route index element={<Navigate to={'vacancies'} replace/>}/>
                                 <Route path={'vacancies'} element={<Body/>}/>
                                 <Route path={'vacancies/:id'} element={<CurrentVacancy/>}/>
                             </Route>
                         </Routes>
-                    </BrowserRouter>
-                </Provider>
-            </MantineProvider>
+                </BrowserRouter>
+            </Provider>
+        </MantineProvider>
     </StrictMode>,
 )

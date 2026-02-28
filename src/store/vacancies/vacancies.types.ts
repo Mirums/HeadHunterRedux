@@ -1,6 +1,7 @@
 export type Vacancy = {
     id: number;
     name: string;
+    alternate_url: string
     salary: {
         from: number | null;
         to: number | null;
@@ -44,6 +45,7 @@ export type VacanciesState = {
 };
 export type CurrentVacancyResponse = Vacancy &{
     description: string | null
+    alternate_url: string
 }
 export type CurrentVacancy = Vacancy & {
     description: string | null

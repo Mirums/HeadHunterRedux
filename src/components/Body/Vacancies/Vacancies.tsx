@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 type Props = {
     name: string
     id?: number
+    url: string
     isCurrentVacancy: boolean
     salary: {
         from: number | null
@@ -61,14 +62,14 @@ export function Vacancies(props: Props) {
         <Text mb={16}>{props.area}</Text>
         <Group gap={12}>
             {props.isCurrentVacancy
-                ? <Button bg={'black'}><Text fw={400} fz={14}>Откликнуться на hh.ru</Text></Button>
+                ? <Button bg={'black'} component={'a'} href={props.url} target="_blank" rel="noopener noreferrer"><Text fw={400} fz={14}>Откликнуться на hh.ru</Text></Button>
                 : <>
                     <Button bg={'black'} onClick={() => {
                         navigate(`/vacancies/${props.id}`)
                     }}>
                         <Text fw={400} fz={14}>Смотреть вакансию </Text>
                     </Button>
-                    <Button bg={'dark.2'} c={'dark.7'}>
+                    <Button component={'a'} href={props.url} target="_blank" rel="noopener noreferrer" bg={'dark.2'} c={'dark.7'}>
                         <Text fw={400} fz={14}>Откликнуться</Text>
                     </Button>
                 </>

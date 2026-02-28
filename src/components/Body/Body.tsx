@@ -38,6 +38,7 @@ export function Body() {
                     <Vacancies
                         key={vacancy.id}
                         isCurrentVacancy={false}
+                        url={vacancy.alternate_url}
                         id={vacancy.id}
                         name={vacancy.name}
                         salary={vacancy.salary}
