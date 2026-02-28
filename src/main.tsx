@@ -49,7 +49,7 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <MantineProvider theme={theme}>
             <Provider store={store}>
-                <BrowserRouter>
+                <BrowserRouter basename="/HeadHunterRedux">
                         <Routes>
                             <Route path={'/'} element={<App/>}>
                                 <Route index element={<Navigate to={'vacancies'} replace/>}/>
